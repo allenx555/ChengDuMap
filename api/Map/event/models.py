@@ -12,6 +12,7 @@ class Event(db.Model):
     phone = db.Column(db.String(15), unique=True, nullable=True)
     x = db.Column(db.String(20), nullable=False)
     y = db.Column(db.String(20), nullable=False)
+    location = db.Column(db.String(255), nullable=False)
     cate = db.Column(db.String(2), nullable=False)
 
     comment = db.relationship("Comment", lazy='dynamic')

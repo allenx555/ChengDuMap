@@ -17,7 +17,7 @@ export default {
 
 <style>
 .home {
+  height: calc(100% - 60px);
   width: 100%;
-  height: 100%;
 }
 </style>
