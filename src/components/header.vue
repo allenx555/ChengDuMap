@@ -67,23 +67,40 @@
       <div class="avatar">
         <el-popover placement="bottom" width="400" trigger="click">
           <el-container>
-            <el-aside width="125px" style="text-align: center;">
+            <el-aside width="width: 65px;" style="text-align: center;">
               <el-avatar
                 width="100%"
                 src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
               ></el-avatar>
-              <div>
-                <h3>昵称</h3>
-                <h3>简介</h3>
-              </div>
+              <el-menu
+                default-active="1-4-1"
+                class="el-menu-vertical-demo"
+                @open="handleOpen"
+                @close="handleClose"
+                collapse="true"
+              >
+                <el-menu-item :userIndex="1">
+                  <i class="el-icon-message"></i>
+                  <span slot="title">消息</span>
+                </el-menu-item>
+                <el-menu-item :userIndex="2">
+                  <i class="el-icon-star-off"></i>
+                  <span slot="title">收藏</span>
+                </el-menu-item>
+                <el-menu-item :userIndex="3">
+                  <i class="el-icon-chat-line-square"></i>
+                  <span slot="title">评论</span>
+                </el-menu-item>
+              </el-menu>
             </el-aside>
-            <el-main>
-              <div>
-                <h2>收藏</h2>
-              </div>
-              <div>
-                <h2>评论</h2>
-              </div>
+            <el-main style="padding-left: 20px;">
+              <el-table :data="tableData" style="width: 100%" height="250">
+                <el-table-column fixed prop="date" label="日期" width="80">
+                </el-table-column>
+                <el-table-column prop="name" label="活动" width="100">
+                </el-table-column>
+                <el-table-column prop="content" label="内容"> </el-table-column>
+              </el-table>
             </el-main>
           </el-container>
 
@@ -104,6 +121,7 @@ export default {
   data() {
     return {
       search: "",
+      userIndex: 1,
       cateOptions: [
         {
           value: "选项1",
