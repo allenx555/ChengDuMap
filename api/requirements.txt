@@ -1,0 +1,7 @@
+Flask
+flask-restful
+flask_script
+flask_login
+bcrypt
+Flask-SQLAlchemy
+flask-cors
