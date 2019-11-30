@@ -6,7 +6,6 @@ from flask_cors import CORS
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')
-app.config.from_pyfile('config.py')
 app.config['RESTFUL_API_DOC_EXCLUDE'] = []
 api = Api(app)
 CORS(app, supports_credentials=True,
@@ -25,7 +24,6 @@ def load_user(user_id):
 
 
 import Map.user.resources
-import Map.algorithm.resources
 
 api.add_resource(Map.user.resources.UserRegistration, '/api/register')
 api.add_resource(Map.user.resources.UserLogin, '/api/login')
