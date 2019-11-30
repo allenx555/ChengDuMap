@@ -5,10 +5,10 @@ class Event(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    is_active = db.Column(db.Boolean, nullable=False)
-    startdate = db.Column(db.Date, nullable=True)
-    enddate = db.Column(db.Date, nullable=True)
+    description = db.Column(db.String(5555), nullable=False)
+    activable = db.Column(db.String(30), nullable=False)
+    startdate = db.Column(db.String(50), nullable=True)
+    enddate = db.Column(db.String(50), nullable=True)
     phone = db.Column(db.String(15), unique=True, nullable=True)
     x = db.Column(db.String(20), nullable=False)
     y = db.Column(db.String(20), nullable=False)
@@ -39,8 +39,20 @@ class Event(db.Model):
 
     def save(self, args):
 
+        self.name = args['name']
+        self.description = args['description']
+        self.activable = args['activable']
+        self.startdate = args['startdate']
+        self.enddate = args['enddate']
+        self.phone = args['phone']
+        self.x = args['x']
+        self.y = args['y']
+        self.location = args['location']
+        self.cate = args['cate']
+
         db.session.add(self)
         db.session.commit()
+
 
     def reset_password(self, new_password):
         pass

@@ -6,7 +6,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False)
-    date = db.Column(db.String(2), nullable=False)
+    date = db.Column(db.String(30), nullable=False)
 
     userid = db.Column(db.Integer, db.ForeignKey('users.id'))
     eventid = db.Column(db.Integer, db.ForeignKey('events.id'))
