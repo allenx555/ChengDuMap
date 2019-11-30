@@ -13,9 +13,6 @@ class User(db.Model):
     likelist = db.Column(db.PickleType, nullable=True)
     description = db.Column(db.String(255), nullable=True)
 
-    user_comments = db.relationship("Comment", lazy='dynamic')
-    user_notes = db.relationship("Note", lazy='dynamic')
-
     # Flask-Login integration
     def is_authenticated(self):
         return True
@@ -39,7 +36,7 @@ class User(db.Model):
         return dicts
 
     def save(self, args):
-        self.phone = args['username']
+        self.phone = args['phone']
         self.password = encrypt(args['password'])
         self.is_active = True
         self.token = 'init'

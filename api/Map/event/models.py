@@ -14,9 +14,7 @@ class Event(db.Model):
     y = db.Column(db.String(20), nullable=False)
     location = db.Column(db.String(255), nullable=False)
     cate = db.Column(db.String(2), nullable=False)
-
-    comment = db.relationship("Comment", lazy='dynamic')
-
+    
     # Flask-Login integration
     def is_authenticated(self):
         return True

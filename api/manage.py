@@ -17,9 +17,8 @@ def db_create():
 
     user = User()
     args = {}
-    args['username'] = 'testuser'
+    args['phone'] = '1234567891011'
     args['password'] = '123456'
-    args['email'] = 'testuser@example.com'
 
     try:
         user.save(args)

@@ -1,6 +1,6 @@
 from Map import db
 
-class User(db.Model):
+class Comment(db.Model):
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -10,6 +10,8 @@ class User(db.Model):
 
     userid = db.Column(db.Integer, db.ForeignKey('users.id'))
     eventid = db.Column(db.Integer, db.ForeignKey('events.id'))
+    user=db.relationship("User", backref=db.backref("users"))
+    author=db.relationship("Event", backref=db.backref("events"))
 
     # Flask-Login integration
     def is_authenticated(self):
