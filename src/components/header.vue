@@ -75,9 +75,7 @@
               <el-menu
                 default-active="1-4-1"
                 class="el-menu-vertical-demo"
-                @open="handleOpen"
-                @close="handleClose"
-                collapse="true"
+                :collapse="true"
               >
                 <el-menu-item :userIndex="1">
                   <i class="el-icon-message"></i>
@@ -94,13 +92,7 @@
               </el-menu>
             </el-aside>
             <el-main style="padding-left: 20px;">
-              <el-table :data="tableData" style="width: 100%" height="250">
-                <el-table-column fixed prop="date" label="日期" width="80">
-                </el-table-column>
-                <el-table-column prop="name" label="活动" width="100">
-                </el-table-column>
-                <el-table-column prop="content" label="内容"> </el-table-column>
-              </el-table>
+              <Datalist :type="fetchUserIndex()" />
             </el-main>
           </el-container>
 
@@ -117,11 +109,17 @@
 </template>
 
 <script>
+import Datalist from "../components/datalist"
+
 export default {
+  components: {
+    Datalist
+  },
   data() {
     return {
       search: "",
       userIndex: 1,
+      tableData: [],
       cateOptions: [
         {
           value: "选项1",
@@ -175,6 +173,16 @@ export default {
         : restaurants
       // 调用 callback 返回建议列表的数据
       cb(results)
+    },
+    fetchUserIndex() {
+      switch (this.userIndex) {
+        case 1:
+          return "消息-个人"
+        case 2:
+          return "收藏-个人"
+        case 3:
+          return "评论-个人"
+      }
     }
   }
 }
