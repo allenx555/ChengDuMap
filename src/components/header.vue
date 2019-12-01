@@ -1,6 +1,10 @@
 <template>
   <div>
     <el-header id="head">
+      <img
+        src="../assets/logo.png"
+        style="width: 120px;float:left;padding: 6px 0 0px 18px;"
+      />
       <el-popover
         placement="bottom"
         width="50"
@@ -51,7 +55,6 @@
           ></el-button
         ></el-button>
       </el-popover>
-
       <el-row class="demo-autocomplete">
         <el-col>
           <el-autocomplete
