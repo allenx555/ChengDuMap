@@ -25,7 +25,7 @@ class UserRegistration(Resource):
 
 class UserLogin(Resource):
     def post(self):
-        user = User.query.filter_by(username=request.json.get("phone", False)).first()
+        user = User.query.filter_by(phone=request.json.get("phone", False)).first()
         if user:
             if decrypt(request.json.get("password", False), user.password):
                 login_user(user)

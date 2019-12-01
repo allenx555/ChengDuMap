@@ -38,7 +38,7 @@
           @click="eventClose()"
         ></el-button>
         <el-popover placement="right" width="400" trigger="click">
-          <Datalist type="评论-活动" :id="event.eventID" />
+          <Datalist type="评论-活动" :id="event.id" />
           <el-button
             type="info"
             icon="el-icon-chat-line-square"

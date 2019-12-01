@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { APIClient } from "../utils/client.js"
+
 export default {
   name: "Login",
   data() {
@@ -58,8 +60,8 @@ export default {
     let checkTel = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入手机号码"))
-      } else if (!this.checkMobile(value)) {
-        callback(new Error("手机号码不合法"))
+        //   } else if (!this.checkMobile(value)) {
+        //     callback(new Error("手机号码不合法"))
       } else {
         callback()
       }
@@ -124,9 +126,24 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          setTimeout(() => {
-            alert("登陆成功")
-          }, 400)
+          console.log(this)
+          APIClient.post("/login", {
+            phone: this.ruleForm2["phone"],
+            password: this.ruleForm2["pass"]
+          })
+            .then(response => {
+              console.log(response)
+              this.$store.commit("setToken", response)
+              this.$router.push({
+                path: "/"
+              })
+            })
+            .catch(error => {
+              this.setState({
+                errored: true
+              })
+              console.log("响应失败:", error)
+            })
         } else {
           console.log("error submit!!")
           return false

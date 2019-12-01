@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     activeCate: ["0", "1", "2", "3", "4"],
     activeDate: "8",
-    nodes: []
+    nodes: [],
+    token: ""
   },
   mutations: {
     setCate(state, Cate) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     setNodes(state, Nodes) {
       state.nodes = Nodes
+    },
+    setToken(state, token) {
+      state.token = token
     }
   },
   actions: {},

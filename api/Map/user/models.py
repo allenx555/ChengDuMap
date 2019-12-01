@@ -1,6 +1,6 @@
 from Map import db
 from .encrypt import encrypt
-
+import time
 
 class User(db.Model):
     __tablename__ = 'users'

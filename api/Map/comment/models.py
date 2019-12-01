@@ -1,4 +1,16 @@
 from Map import db
+import time
+
+
+def get_time():
+    lt = time.localtime()
+    noon = time.strftime("%p", lt)
+    if noon == "PM":
+        st = time.strftime("%Y/%m/%d %H:%M", lt)
+    else:
+        st = time.strftime("%Y/%m/%d %H:%M", lt)
+    return st
+
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -10,8 +22,8 @@ class Comment(db.Model):
 
     userid = db.Column(db.Integer, db.ForeignKey('users.id'))
     eventid = db.Column(db.Integer, db.ForeignKey('events.id'))
-    user=db.relationship("User", backref=db.backref("users"))
-    author=db.relationship("Event", backref=db.backref("events"))
+    user = db.relationship("User", backref=db.backref("users"))
+    author = db.relationship("Event", backref=db.backref("events"))
 
     # Flask-Login integration
     def is_authenticated(self):
@@ -36,6 +48,11 @@ class Comment(db.Model):
         return dicts
 
     def save(self, args):
+        self.date = get_time()
+        self.eventid = args['eventid']
+        self.userid = args['userid']
+        self.is_active = True
+        self.content = args['content']
 
         db.session.add(self)
         db.session.commit()
