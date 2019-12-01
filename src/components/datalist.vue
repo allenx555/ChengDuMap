@@ -22,6 +22,7 @@
     </el-table>
     <el-form
       ref="form"
+      v-if="type.split('-')[1] == '活动'"
       :model="form"
       label-width="80px"
       style="margin-top:10px;"
@@ -57,6 +58,16 @@ export default {
           .catch(error => {
             console.log("响应失败:", error)
           })
+    },
+    type(newVal, oldVal) {
+      if (this.type == "评论-个人")
+        APIClient.get("/getusercomment")
+          .then(response => {
+            this.tableData = response.data.eventlist
+          })
+          .catch(error => {
+            console.log("响应失败:", error)
+          })
     }
   },
   methods: {
@@ -67,6 +78,13 @@ export default {
       })
         .then(response => {
           this.tableData = response.data.eventlist
+          APIClient.post("/geteventcomment", { eventid: this.id })
+            .then(response => {
+              this.tableData = response.data.eventlist
+            })
+            .catch(error => {
+              console.log("响应失败:", error)
+            })
         })
         .catch(error => {
           console.log("响应失败:", error)

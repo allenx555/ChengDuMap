@@ -79,22 +79,40 @@
                 class="el-menu-vertical-demo"
                 :collapse="true"
               >
-                <el-menu-item :userIndex="1">
+                <el-menu-item
+                  @click="
+                    () => {
+                      messagetype = '消息-个人'
+                    }
+                  "
+                >
                   <i class="el-icon-message"></i>
                   <span slot="title">消息</span>
                 </el-menu-item>
-                <el-menu-item :userIndex="2">
+                <el-menu-item
+                  @click="
+                    () => {
+                      messagetype = '收藏-个人'
+                    }
+                  "
+                >
                   <i class="el-icon-star-off"></i>
                   <span slot="title">收藏</span>
                 </el-menu-item>
-                <el-menu-item :userIndex="3">
+                <el-menu-item
+                  @click="
+                    () => {
+                      messagetype = '评论-个人'
+                    }
+                  "
+                >
                   <i class="el-icon-chat-line-square"></i>
                   <span slot="title">评论</span>
                 </el-menu-item>
               </el-menu>
             </el-aside>
             <el-main style="padding-left: 20px;">
-              <Datalist :type="fetchUserIndex()" />
+              <Datalist :type="messagetype" />
             </el-main>
           </el-container>
 
@@ -120,8 +138,8 @@ export default {
   data() {
     return {
       search: "",
-      userIndex: 1,
       tableData: [],
+      messagetype: "",
       cateOptions: [
         {
           value: "0",
@@ -178,21 +196,23 @@ export default {
         : options
       // 调用 callback 返回建议列表的数据
       cb(results)
-    },
-    fetchUserIndex() {
-      switch (this.userIndex) {
-        case 1:
-          return "消息-个人"
-        case 2:
-          return "收藏-个人"
-        case 3:
-          return "评论-个人"
-      }
     }
   },
   watch: {
+    userIndex(newVal, oldVal) {
+      switch (newVal) {
+        case 1:
+          this.messagetype = "消息-个人"
+          break
+        case 2:
+          this.messagetype = "收藏-个人"
+          break
+        case 3:
+          this.messagetype = "评论-个人"
+          break
+      }
+    },
     cateValue: function(newVal, oldVal) {
-      console.log(newVal)
       this.$store.commit("setCate", newVal)
     },
     dateValue: function(newVal, oldVal) {

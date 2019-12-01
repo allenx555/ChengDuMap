@@ -148,7 +148,6 @@ export default {
         .filter(res => {
           return res != undefined
         })
-      console.log(this.activeNodes)
     }
   },
   methods: {

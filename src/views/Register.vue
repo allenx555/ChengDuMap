@@ -125,7 +125,6 @@ export default {
     sendCode() {
       let tel = this.ruleForm2.tel
       if (this.checkMobile(tel)) {
-        console.log(tel)
         let time = 60
         this.buttonText = "已发送"
         this.isDisabled = true

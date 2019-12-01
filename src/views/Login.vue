@@ -103,7 +103,6 @@ export default {
     sendCode() {
       let tel = this.ruleForm2.tel
       if (this.checkMobile(tel)) {
-        console.log(tel)
         let time = 60
         this.buttonText = "已发送"
         this.isDisabled = true
@@ -125,13 +124,11 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this)
           APIClient.post("/login", {
             phone: this.ruleForm2["tel"],
             password: this.ruleForm2["pass"]
           })
             .then(response => {
-              console.log(response)
               this.$store.commit("setToken", response)
               this.$router.push({
                 path: "/"
