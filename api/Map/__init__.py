@@ -23,10 +23,11 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-import Map.user.resources
+import Map.user.resources, Map.event.resources
 
 api.add_resource(Map.user.resources.UserRegistration, '/api/register')
 api.add_resource(Map.user.resources.UserLogin, '/api/login')
 api.add_resource(Map.user.resources.UserLogout, '/api/logout')
 api.add_resource(Map.user.resources.UserLikeList, '/api/getlikelist')
 api.add_resource(Map.user.resources.UserCommentList, '/api/getcommentlist')
+api.add_resource(Map.event.resources.EventList, '/api/geteventlist')
