@@ -38,7 +38,7 @@ class User(db.Model):
 
     def save(self, args):
         self.phone = args['phone']
-        self.password = encrypt(args['password'])
+        self.password = args['password']
         self.is_active = True
         self.token = 'init'
 

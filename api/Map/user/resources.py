@@ -27,7 +27,7 @@ class UserLogin(Resource):
     def post(self):
         user = User.query.filter_by(phone=request.json.get("phone", False)).first()
         if user:
-            if decrypt(request.json.get("password", False), user.password):
+            if (request.json.get("password", False), user.password):
                 login_user(user)
 
                 return {'token': session['_id']}, 200
