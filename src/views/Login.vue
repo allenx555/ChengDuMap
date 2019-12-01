@@ -122,13 +122,12 @@ export default {
         }
       }
     },
-    // <!--提交注册-->
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log(this)
           APIClient.post("/login", {
-            phone: this.ruleForm2["phone"],
+            phone: this.ruleForm2["tel"],
             password: this.ruleForm2["pass"]
           })
             .then(response => {

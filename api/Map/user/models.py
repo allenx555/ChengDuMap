@@ -10,8 +10,8 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False)
     token = db.Column(db.String(255), nullable=False)
-    likelist = db.Column(db.PickleType, nullable=True)
-    commentlist = db.Column(db.PickleType, nullable=True)
+    likelist = db.Column(db.String(255), nullable=True)
+    commentlist = db.Column(db.String(255), nullable=True)
     description = db.Column(db.String(255), nullable=True)
 
     # Flask-Login integration

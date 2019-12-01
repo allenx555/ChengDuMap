@@ -18,7 +18,7 @@ def db_create():
 
     user = User()
     args = {}
-    args['phone'] = '1234567891011'
+    args['phone'] = '12345678910'
     args['password'] = '123456'
     
     event = Event()
