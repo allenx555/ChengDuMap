@@ -92,7 +92,7 @@ def ger3(result):                                       #辅助计算公式
     result.pop(j)
     return index1,index2,index3
 
-def recomment(power):                       #返回推荐地图的经纬度,list
+def recomment():                       #返回推荐地图的经纬度,list
     '''搜索数据库中的对应的信息
     返回一个地图list'''
     rec, index = CFr(fetch_usrMain())
