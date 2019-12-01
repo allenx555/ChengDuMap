@@ -60,6 +60,26 @@ python run.py
     '/api/createcomment' 创建评论
     '/api/getusercomment' 获取用户评论
 
+### 算法
+
+1.  兴趣推荐算法
+使用**调整后的余弦相似度**计算方法来衡量用户的兴趣倾向，并使用**基于用户的协同过滤**调整已经得到的用户倾向，使得在用户使用初期，数据单薄时，推送的活动更加地符合用户的心意
+
+- 算法示例图
+
+![](https://user-gold-cdn.xitu.io/2019/10/10/16db3923fd49de7d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+
+![](https://upload-images.jianshu.io/upload_images/5687393-32c6d10174de9458.png?imageMogr2/auto-orient/strip|imageView2/2/w/668/format/webp)
+
+2. 计算用户之间的兴趣接近程度
+将用户的兴趣倾向投射到五维空间中，进行计算。因为维度有五维并且每一维的数学意义是用户在这个方向上的兴趣程度，所以数据稳定可靠，直接采用**余弦相似度**算法能很准确地得到两个用户间的兴趣近似程度
+
+- 算法示例图(以三维空间为例)
+
+![](https://user-gold-cdn.xitu.io/2019/10/10/16db3923f97930db?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+
+![](https://user-gold-cdn.xitu.io/2019/10/10/16db3923fd49de7d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+
 
 
 ### 数据来源与数据清洗
@@ -150,5 +170,22 @@ lines terminated by '\n';
 ### 未完成构建的：
 
 1. 活动详情页的导航及购票跳转服务
+
 2. 交友系统：用户可在平台与其他用户进行交流，但不提供私聊服务
+
 3. 商家热线：提供为商家推广的服务
+
+4. 推荐算法优化：增加维度**内容、用户特征、环境特征**
+
+   - 内容
+     - 提取活动的关键字
+     - 提取明星关键字
+   - 用户特征
+     - 职业
+     - 年龄
+     - 性别
+   - 环境特征
+     - 用户处于出门旅游状态，停留时间短
+     - 用户是成都人，常居成都
+
+   以上三个维度走DNN提取特征，由此特征调整用户的爱好倾向参数，同时**活动、明星的关键字**会特殊考虑。
