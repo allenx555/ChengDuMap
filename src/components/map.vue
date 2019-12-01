@@ -10,7 +10,7 @@
         mapStyle="amap://styles/macaron"
       >
         <el-amap-marker
-          v-for="(node, index) in nodes"
+          v-for="(node, index) in activeNodes"
           :position="[node.x, node.y]"
           @click.native="alert(index)"
           :events="marker.events"
@@ -99,6 +99,7 @@ export default {
       center: [104.079906, 30.666666], //初始地图中心点
       amapManager,
       nodes: [],
+      activeNodes: [],
       cates: ["演唱会", "话剧歌剧", "动漫", "休闲展览", "科技比赛"],
       marker: {},
       event: {},
@@ -108,13 +109,13 @@ export default {
   created() {
     APIClient.get("/geteventlist")
       .then(response => {
-        console.log(response)
         this.nodes = response.data.eventlist
+        this.activeNodes = this.nodes
+        this.$store.commit("setNodes", this.nodes)
       })
       .catch(error => {
         console.log("响应失败:", error)
       })
-    console.log(this.nodes)
     // this.nodes[0] = {
     //   eventID: 1,
     //   name: "知更鸟动漫游戏交流展",
@@ -136,6 +137,18 @@ export default {
           that.markerClick(e)
         }
       }
+    }
+  },
+  watch: {
+    "$store.state.activeCate": function(newVal, oldVal) {
+      this.activeNodes = this.nodes
+        .map(node => {
+          if (newVal.includes(node.cate)) return node
+        })
+        .filter(res => {
+          return res != undefined
+        })
+      console.log(this.activeNodes)
     }
   },
   methods: {

@@ -62,7 +62,6 @@
             v-model="search"
             :fetch-suggestions="querySearch"
             placeholder="请输入内容"
-            :trigger-on-focus="false"
             @select="handleSelect"
             style="margin-top: 3px;"
           ></el-autocomplete> </el-col
@@ -125,55 +124,58 @@ export default {
       tableData: [],
       cateOptions: [
         {
-          value: "选项1",
+          value: "0",
           label: "演唱会"
         },
         {
-          value: "选项2",
+          value: "1",
           label: "话剧歌剧"
         },
         {
-          value: "选项3",
+          value: "2",
           label: "休闲展览"
         },
         {
-          value: "选项4",
+          value: "3",
           label: "二次元"
         },
         {
-          value: "选项5",
+          value: "4",
           label: "科技比赛"
         }
       ],
-      dateValue: [],
+      dateValue: this.$store.state.activeDate,
       dateOptions: [
         {
-          value: "选项1",
+          value: "5",
           label: "一天内"
         },
         {
-          value: "选项2",
+          value: "6",
           label: "三天内"
         },
         {
-          value: "选项3",
+          value: "7",
           label: "一周内"
         },
         {
-          value: "选项4",
+          value: "8",
           label: "一月内"
         }
       ],
-      cateValue: []
+      cateValue: this.$store.state.activeCate
     }
   },
   methods: {
     handleSelect() {},
     querySearch(queryString, cb) {
-      var restaurants = this.restaurants
+      var options = this.$store.state.nodes
+      options = options.map(x => {
+        return { value: x.name }
+      })
       var results = queryString
-        ? restaurants.filter(this.createFilter(queryString))
-        : restaurants
+        ? options.filter(x => x.value.includes(queryString))
+        : options
       // 调用 callback 返回建议列表的数据
       cb(results)
     },
@@ -186,6 +188,15 @@ export default {
         case 3:
           return "评论-个人"
       }
+    }
+  },
+  watch: {
+    cateValue: function(newVal, oldVal) {
+      console.log(newVal)
+      this.$store.commit("setCate", newVal)
+    },
+    dateValue: function(newVal, oldVal) {
+      this.$store.commit("setDate", newVal)
     }
   }
 }
