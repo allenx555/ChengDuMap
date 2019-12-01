@@ -1,3 +1,4 @@
+# 放到api目录下跑
 from scipy import spatial
 import numpy as np
 from flask import Flask
