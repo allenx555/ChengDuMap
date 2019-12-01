@@ -1,26 +1,75 @@
 <template>
-  <div class="amap-wrapper">
-    <el-amap
-      class="amap-box"
-      :center="center"
-      :zoom="zoom"
-      :amap-manager="amapManager"
-      :vid="'amap-vue'"
-      mapStyle="amap://styles/whitesmoke"
-    >
-      <el-amap-marker
-        v-for="(node, index) in nodes"
-        :position="[node.x, node.y]"
-        @click.native="alert(index)"
-        :events="marker.events"
-        :visible="true"
-        :draggable="false"
-        :vid="index"
-        :key="index"
-        :extData="node.eventID"
-        :icon="chooseIcon(node.cate)"
-      ></el-amap-marker
-    ></el-amap>
+  <div style="height: 100%;">
+    <div class="amap-wrapper">
+      <el-amap
+        class="amap-box"
+        :center="center"
+        :zoom="zoom"
+        :amap-manager="amapManager"
+        :vid="'amap-vue'"
+        mapStyle="amap://styles/whitesmoke"
+      >
+        <el-amap-marker
+          v-for="(node, index) in nodes"
+          :position="[node.x, node.y]"
+          @click.native="alert(index)"
+          :events="marker.events"
+          :visible="true"
+          :draggable="false"
+          :vid="index"
+          :key="index"
+          :extData="node.eventID"
+          :icon="chooseIcon(node.cate)"
+        ></el-amap-marker
+      ></el-amap>
+    </div>
+    <el-card class="box-card" v-show="eventShow">
+      <div slot="header" class="clearfix">
+        <span
+          ><b>{{ event.name }}</b></span
+        >
+        <el-button
+          icon="el-icon-close"
+          circle
+          style="float:right;margin-top: -8px;margin-left: 10px;"
+          @click="eventClose()"
+        ></el-button>
+        <el-popover placement="right" width="400" trigger="click">
+          <Datalist type="评论-活动" :id="event.eventID" />
+          <el-button
+            type="info"
+            icon="el-icon-chat-line-square"
+            circle
+            style="float:right;margin-top: -8px;margin-left: 10px;"
+            slot="reference"
+          ></el-button>
+        </el-popover>
+        <el-button
+          type="warning"
+          icon="el-icon-star-off"
+          circle
+          style="float:right;margin-top: -8px;margin-left: 10px;"
+        ></el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-share"
+          circle
+          style="float:right;margin-top: -8px;margin-left: 10px;"
+        ></el-button>
+      </div>
+      <div style="overflow-y:auto;">
+        <p><b>状态</b></p>
+        {{ event.is_active }}
+        <p><b>地点</b></p>
+        {{ event.location }}
+        <p><b>日期</b></p>
+        {{ event.startdate }}
+        ~
+        {{ event.enddate }}
+        <p><b>概述</b></p>
+        {{ event.description }}
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -31,10 +80,14 @@ import icon1 from "../assets/1.png"
 import icon2 from "../assets/2.png"
 import icon3 from "../assets/3.png"
 import icon4 from "../assets/4.png"
+import Datalist from "../components/datalist"
 
 let amapManager = new AMapManager()
 
 export default {
+  components: {
+    Datalist
+  },
   data() {
     let self = this
     return {
@@ -43,7 +96,9 @@ export default {
       amapManager,
       nodes: [],
       cates: ["演唱会", "话剧歌剧", "动漫", "休闲展览", "科技比赛"],
-      marker: {}
+      marker: {},
+      event: {},
+      eventShow: false
     }
   },
   created() {
@@ -71,27 +126,12 @@ export default {
     }
   },
   methods: {
+    eventClose() {
+      this.eventShow = false
+    },
     markerClick(e) {
-      let node = this.searchNode(e.target.getExtData())
-      this.$alert(
-        "<div style:'overflow-y:auto;'><h3>状态</h3>" +
-          node.is_active +
-          "<h3>地点</h3>" +
-          node.location +
-          "<h3>联系电话</h3>" +
-          node.phone +
-          "<h3>日期</h3>" +
-          node.startdate +
-          "~" +
-          node.enddate +
-          "<h3>概述</h3>" +
-          node.description +
-          "</div>",
-        node.name,
-        {
-          dangerouslyUseHTMLString: true
-        }
-      )
+      this.event = this.searchNode(e.target.getExtData())
+      this.eventShow = true
     },
     searchNode(id) {
       for (let index in this.nodes) {
@@ -123,5 +163,14 @@ export default {
 }
 .v-modal {
   opacity: 0;
+}
+.box-card {
+  width: 500px;
+  position: absolute;
+  top: 80px;
+  left: 30px;
+  transform-origin: center top;
+  z-index: 2001;
+  text-align: left;
 }
 </style>
