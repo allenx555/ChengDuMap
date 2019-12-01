@@ -28,3 +28,5 @@ import Map.user.resources
 api.add_resource(Map.user.resources.UserRegistration, '/api/register')
 api.add_resource(Map.user.resources.UserLogin, '/api/login')
 api.add_resource(Map.user.resources.UserLogout, '/api/logout')
+api.add_resource(Map.user.resources.UserLikeList, '/api/getlikelist')
+api.add_resource(Map.user.resources.UserCommentList, '/api/getcommentlist')

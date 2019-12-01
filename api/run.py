@@ -1,4 +1,4 @@
-from InTexT import app
+from Map import app
 
 
 if __name__ == '__main__':

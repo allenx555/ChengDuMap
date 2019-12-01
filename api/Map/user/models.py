@@ -11,6 +11,7 @@ class User(db.Model):
     is_active = db.Column(db.Boolean, nullable=False)
     token = db.Column(db.String(255), nullable=False)
     likelist = db.Column(db.PickleType, nullable=True)
+    commentlist = db.Column(db.PickleType, nullable=True)
     description = db.Column(db.String(255), nullable=True)
 
     # Flask-Login integration

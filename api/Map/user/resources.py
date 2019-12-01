@@ -7,18 +7,17 @@ from Map.user.encrypt import decrypt
 
 class UserRegistration(Resource):
     def post(self):
-        if User.query.filter_by(username=request.json.get('username', False)).first():
-            return {'message': 'User {} already exists'.format(request.json.get('username', False))}
+        if User.query.filter_by(phone=request.json.get('phone', False)).first():
+            return {'message': 'User {} already exists'.format(request.json.get('phone', False))}
 
         user = User()
         args = {}
-        args['username'] = request.json.get('username', False)
+        args['phone'] = request.json.get('phone', False)
         args['password'] = request.json.get('password', False)
-        args['email'] = request.json.get('email', False)
         try:
             user.save(args)
             return {
-                'message': 'User {} was created'.format(request.json.get('username', False)),
+                'message': 'User {} was created'.format(request.json.get('phone', False)),
             }
         except:
             return {'message': 'Something went wrong'}, 500
@@ -26,7 +25,7 @@ class UserRegistration(Resource):
 
 class UserLogin(Resource):
     def post(self):
-        user = User.query.filter_by(username=request.json.get("username", False)).first()
+        user = User.query.filter_by(username=request.json.get("phone", False)).first()
         if user:
             if decrypt(request.json.get("password", False), user.password):
                 login_user(user)
@@ -45,17 +44,23 @@ class UserLogout(Resource):
         return {'status': 200}
 
 
-class UserNotes(Resource):
+class UserLikeList(Resource):
     @login_required
     def get(self):
-        note_list = current_user.user_notes.all()
-        print(current_user.user_notes)
-        notes = []
-        for note in note_list:
-            notes.append({"global_id": note.global_id, "note_title": note.note_title, "template": note.template,
-                          "create_time": str(note.create_time), "update_time": str(note.update_time),
-                          "is_del": str(note.is_del)})
-        if note_list:
-            return {'notes': notes}
+        likelist = current_user.likelist.all()
+        print(current_user.likelist)
+        if likelist:
+            return {'likelist': likelist}
+        else:
+            return {'message': 'Something went wrong'}, 500
+
+
+class UserCommentList(Resource):
+    @login_required
+    def get(self):
+        commentlist = current_user.commentlist.all()
+        print(current_user.commentlist)
+        if commentlist:
+            return {'commentlist': commentlist}
         else:
             return {'message': 'Something went wrong'}, 500
