@@ -4,33 +4,47 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from flask_login import LoginManager
-from flask_cors import CORS
+from flask_login import current_user
+from Map import db
+from Map import app
 import json
-from ..event.models import Event
-from ..user.models import User
+from Map.user.models import User
+from Map.event.models import Event
+from Map.comment.models import Comment
+from datetime import datetime
 
 forward = ([1,0,0,0,0], [0,1,0,0,0], [0,0,1,0,0], [0,0,0,1,0], [0,0,0,0,1])
+
+def FromComment_eventid_GetUserid(Eventid):#输入的只是eventid，一个数字
+    try:
+        output = Comment.query.filter_by(eventid = Eventid).first()
+        return output.id
+    except:
+        return 0
+#测试函数
+
+#print(FromComment_eventid_GetUserid(54))
+
 def fetch_usr():                                        #得到主用户的数据
-    user = User()
-    uid = user.get_id()
-    userdata = User.query.filter_by(id=uid).fisrst()
+    user = current_user
+    uid = user.id
     cosx = list()
-    for i in userdata.likelist:                          #获取用户的个性向量
+    for i in user.likelist:                          #获取用户的个性向量
         cosx.append(i)
     return cosx
 
 def fetch_other():                                      #得到其他用户的数据
-    user2 = User()
-    uid2 = user2.get_id()
+    uid2 = FromComment_eventid_GetUserid()
     user2data = User.query.filter_by(id=uid2).first()
     cosy = list()
-    for i in user2data:
+    for i in user2data.likelist:
         cosy.append(i)
     return cosy
-def figure_out(cosx,cosz):                              #计算出兴趣的相似程度
+def like_rate(cosx,cosz):                              #计算出兴趣的相似程度
     x = np.array(cosx)
     y = np.array(cosz)
-    dic = {"uid":user.id,"uname":user.name,"like_hood":1 - spatial.distance.cosine(x,y)}
+    user = current_user
+    dic = {"uid":user.id,"uname":user.name,"like_rate":1 - spatial.distance.cosine(x,y)}
     js = json.dumps(dic,indent=4)
     return js
 
@@ -82,9 +96,9 @@ def recomment(power):                       #返回推荐地图的经纬度,list
     '''搜索数据库中的对应的信息
     返回一个地图list'''
     rec, index = CFr(fetch_usrMain())
-    user = User()
+    user = current_user
     user.likelist[index] = rec
-    rec_list = get_recomment_pow()
+    rec_list = list(get_recomment_pow())
     event = Event.query.filter_by(id=rec_list[0]).all()
     if len(event) < 10 :
         event.bak = Event.query.filter_by(id=rec_list[1]).all()
@@ -103,8 +117,8 @@ def recomment(power):                       #返回推荐地图的经纬度,list
         map_list.append([e.x,e.y])
     return map_list
 def fetch_usrMain():                                    #获取主用户的比重在0.3以上的方向,索引,辅助计算值
-    user = User()
-    uid = user.get_id()
+    user = current_user
+    uid = user.id
     userdata = User.query.filter_by(id=uid).first()
     cosx = list()
     for i in userdata.likelist:                          #获取用户的个性向量
@@ -121,8 +135,8 @@ def fetch_usrMain():                                    #获取主用户的比�
     return filt,index,sumlike/len(filt)
 
 def CFr(filt,index,avr):                                #基于用户的协同过滤算法,在推荐活动时一定程度上修正用户的倾向
-    user = User()
-    uid = user.get_id()
+    user = current_user
+    uid = user.id
     userdata = User.query.all()
     j = 0
     for i in userdata:
