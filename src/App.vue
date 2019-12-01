@@ -22,11 +22,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #f2f2f2;
+  background-color: rgba(243, 248, 255, 0.8);
   width: 100%;
   height: 100%;
   #head {
-    background-color: rgba(242, 242, 242, 0.8);
+    position: absolute;
+    z-index: 99;
+    width: 99%;
+    background-color: rgba(243, 248, 255, 0.6);
   }
 }
 #nav {

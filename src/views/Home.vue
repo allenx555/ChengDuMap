@@ -17,7 +17,9 @@ export default {
 
 <style>
 .home {
-  height: calc(100% - 60px);
-  width: 100%;
+  height: 99%;
+  width: 99%;
+  position: absolute;
+  z-index: 0;
 }
 </style>

@@ -7,7 +7,7 @@
         :zoom="zoom"
         :amap-manager="amapManager"
         :vid="'amap-vue'"
-        mapStyle="amap://styles/whitesmoke"
+        mapStyle="amap://styles/macaron"
       >
         <el-amap-marker
           v-for="(node, index) in nodes"
@@ -18,20 +18,23 @@
           :draggable="false"
           :vid="index"
           :key="index"
-          :extData="node.eventID"
+          :extData="node.id"
           :icon="chooseIcon(node.cate)"
         ></el-amap-marker
       ></el-amap>
     </div>
     <el-card class="box-card" v-show="eventShow">
       <div slot="header" class="clearfix">
-        <span
-          ><b>{{ event.name }}</b></span
-        >
+        <div style="width:60%">
+          <span
+            ><b>{{ event.name }}</b></span
+          >
+        </div>
+
         <el-button
           icon="el-icon-close"
           circle
-          style="float:right;margin-top: -8px;margin-left: 10px;"
+          style="float:right;margin-top: -4px;margin-left: 10px;"
           @click="eventClose()"
         ></el-button>
         <el-popover placement="right" width="400" trigger="click">
@@ -40,7 +43,7 @@
             type="info"
             icon="el-icon-chat-line-square"
             circle
-            style="float:right;margin-top: -8px;margin-left: 10px;"
+            style="float:right;margin-top: -4px;margin-left: 10px;"
             slot="reference"
           ></el-button>
         </el-popover>
@@ -48,13 +51,13 @@
           type="warning"
           icon="el-icon-star-off"
           circle
-          style="float:right;margin-top: -8px;margin-left: 10px;"
+          style="float:right;margin-top: -4px;margin-left: 10px;"
         ></el-button>
         <el-button
           type="primary"
           icon="el-icon-share"
           circle
-          style="float:right;margin-top: -8px;margin-left: 10px;"
+          style="float:right;margin-top: -4px;margin-left: 10px;"
         ></el-button>
       </div>
       <div style="overflow-y:auto;">
@@ -81,6 +84,7 @@ import icon2 from "../assets/2.png"
 import icon3 from "../assets/3.png"
 import icon4 from "../assets/4.png"
 import Datalist from "../components/datalist"
+import { APIClient } from "../utils/client.js"
 
 let amapManager = new AMapManager()
 
@@ -102,20 +106,29 @@ export default {
     }
   },
   created() {
-    this.nodes[0] = {
-      eventID: 1,
-      name: "知更鸟动漫游戏交流展",
-      is_active: "售票中",
-      startdate: "2020.01.01 09:30",
-      enddate: "2020.01.02 17:00",
-      phone: "",
-      location: "中国西部国际博览城",
-      x: "104.081785",
-      y: "30.420097",
-      cate: "2",
-      description:
-        "#知更鸟动漫游戏交流展#我们来了！为所有喜爱ACG的小伙伴们带来最好玩最有趣的漫展体验"
-    }
+    APIClient.get("/geteventlist")
+      .then(response => {
+        console.log(response)
+        this.nodes = response.data.eventlist
+      })
+      .catch(error => {
+        console.log("响应失败:", error)
+      })
+    console.log(this.nodes)
+    // this.nodes[0] = {
+    //   eventID: 1,
+    //   name: "知更鸟动漫游戏交流展",
+    //   is_active: "售票中",
+    //   startdate: "2020.01.01 09:30",
+    //   enddate: "2020.01.02 17:00",
+    //   phone: "",
+    //   location: "中国西部国际博览城",
+    //   x: "104.081785",
+    //   y: "30.420097",
+    //   cate: "2",
+    //   description:
+    //     "#知更鸟动漫游戏交流展#我们来了！为所有喜爱ACG的小伙伴们带来最好玩最有趣的漫展体验"
+    // }
     let that = this
     this.marker = {
       events: {
@@ -135,7 +148,7 @@ export default {
     },
     searchNode(id) {
       for (let index in this.nodes) {
-        if (this.nodes[index].eventID == id) return this.nodes[index]
+        if (this.nodes[index].id == id) return this.nodes[index]
       }
     },
     chooseIcon(cate) {
@@ -172,5 +185,7 @@ export default {
   transform-origin: center top;
   z-index: 2001;
   text-align: left;
+  max-height: 600px;
+  overflow: auto;
 }
 </style>
